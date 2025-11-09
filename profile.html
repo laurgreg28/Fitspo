@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StyleAssist | Profile</title>
+  <link rel="stylesheet" href="profile.css" />
+</head>
+<body>
+  <header>
+    <div class="logo">StyleAssist</div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="quiz.html">Quiz</a></li>
+        <li><a href="profile.html" class="active">Profile</a></li>
+        <li><a href="login.html">Log Out</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="profile-container">
+    <section class="user-info">
+      <img src="profile-placeholder.png" alt="Profile Picture" class="profile-pic" />
+      <h2>Welcome, Lauren!</h2>
+      <p><strong>Style Type:</strong> Trendy</p>
+      <p><strong>Body Shape:</strong> Round</p>
+      <p><strong>Size:</strong> 20</p>
+      <button onclick="location.href='quiz.html'">Retake Style Quiz</button>
+    </section>
+
+    <section class="outfit-section">
+      <h3>Saved Outfits</h3>
+      <label for="occasion">Filter by Occasion:</label>
+      <select id="occasion">
+        <option value="all">All</option>
+        <option value="casual">Casual</option>
+        <option value="work">Work</option>
+        <option value="date">Date Night</option>
+      </select>
+
+      <div class="outfit-grid">
+        <div class="outfit-card">
+          <img src="outfit1.jpg" alt="Outfit 1" />
+          <p>Flowy top with high-waisted jeans</p>
+          <div class="rating">⭐️⭐️⭐️⭐️</div>
+        </div>
+        <div class="outfit-card">
+          <img src="outfit2.jpg" alt="Outfit 2" />
+          <p>Wrap dress with neutral heels</p>
+          <div class="rating">⭐️⭐️⭐️⭐️⭐️</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="tips-section">
+      <h3>Styling Tips</h3>
+      <ul>
+        <li>Flowy fabrics help balance your silhouette</li>
+        <li>Vertical lines elongate your frame</li>
+        <li>Layer with light-colored outerwear</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 StyleAssist. All rights reserved.</p>
+  </footer>
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StyleAssist | Login</title>
+  <link rel="stylesheet" href="login.css" />
+</head>
+<body>
+  <header>
+    <div class="logo">StyleAssist</div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="login.html" class="active">Login</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="login-container">
+    <div class="login-box">
+      <h2>Welcome Back</h2>
+      <p>Log in to access your style profile and outfit recommendations.</p>
+      <form action="dashboard.html" method="POST">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required />
+
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required />
+
+        <button type="submit">Login</button>
+      </form>
+      <p class="signup-link">Don't have an account? <a href="signup.html">Sign up here</a></p>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 StyleAssist. All rights reserved.</p>
+  </footer>
+  <script src="script.js"></script>
+</body>
+</html>
