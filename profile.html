@@ -3,52 +3,89 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>StyleAssist | Profile</title>
+  <title>Fitspo | Profile</title>
   <link rel="stylesheet" href="profile.css" />
 </head>
 <body>
+  <script>
+    // Check if user is logged in, redirect if not
+    const isLoggedIn = localStorage.getItem("isLoggedIn");
+    if (isLoggedIn !== "true") {
+      alert("Please log in to access your profile.");
+      window.location.href = "login.html";
+    }
+  </script>
+  
   <header>
-    <div class="logo">StyleAssist</div>
+    <div class="logo"><a href="index.html">Fitspo</a></div>
     <nav>
       <ul>
         <li><a href="index.html">Home</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
         <li><a href="quiz.html">Quiz</a></li>
         <li><a href="profile.html" class="active">Profile</a></li>
-        <li><a href="login.html">Log Out</a></li>
+        <li><a href="#" id="logoutBtn">Log Out</a></li>
       </ul>
     </nav>
   </header>
 
   <main class="profile-container">
-    <section class="user-info">
-      <img src="profile-placeholder.png" alt="Profile Picture" class="profile-pic" />
-      <h2>Welcome, Lauren!</h2>
-      <p><strong>Style Type:</strong> Trendy</p>
-      <p><strong>Body Shape:</strong> Round</p>
-      <p><strong>Size:</strong> 20</p>
-      <button onclick="location.href='quiz.html'">Retake Style Quiz</button>
+    <section class="main-profile-section">
+      <div class="profile-left">
+        <div class="profile-pic-container">
+          <img src="defaultpfp.png" alt="Profile Picture" class="profile-pic" id="profilePicture" />
+          <div class="profile-pic-dropdown">
+            <button class="dropdown-toggle" id="profileDropdownBtn">
+              <span id="usernameDisplay">Username</span> ▼
+            </button>
+            <div class="dropdown-menu" id="profileDropdownMenu">
+              <button class="dropdown-item" id="changePhotoBtn">Change Photo</button>
+              <button class="dropdown-item" id="removePhotoOption" style="display: none;">Remove Photo</button>
+              <button class="dropdown-item delete-account" id="deleteAccountBtn">Delete Account</button>
+            </div>
+          </div>
+          <input type="file" id="profileImageInput" accept="image/*" style="display: none;" />
+        </div>
+        
+        <!-- Simple stats directly under profile options -->
+        <div class="simple-stats">
+          <span id="totalLikes">0</span> Hearts • <span id="totalUploads">0</span> Styles
+        </div>
+      </div>
+
+      <!-- Quiz Section aligned with profile picture -->
+      <div class="profile-right">
+        <div id="quizStatus">
+          <!-- Quiz content will be loaded here -->
+        </div>
+      </div>
     </section>
 
+
+
     <section class="outfit-section">
-      <h3>Saved Outfits</h3>
-      <label for="occasion">Filter by Occasion:</label>
+      <div class="section-header">
+        <h3>Saved Outfits</h3>
+      </div>
+      <label for="occasion">Filter by Category:</label>
       <select id="occasion">
-        <option value="all">All</option>
+        <option value="all">All Categories</option>
         <option value="casual">Casual</option>
-        <option value="work">Work</option>
-        <option value="date">Date Night</option>
+        <option value="professional">Professional</option>
+        <option value="formal">Formal</option>
+        <option value="trendy">Trendy</option>
+        <option value="classic">Classic</option>
       </select>
 
-      <div class="outfit-grid">
-        <div class="outfit-card">
-          <img src="outfit1.jpg" alt="Outfit 1" />
-          <p>Flowy top with high-waisted jeans</p>
-          <div class="rating">⭐️⭐️⭐️⭐️</div>
-        </div>
-        <div class="outfit-card">
-          <img src="outfit2.jpg" alt="Outfit 2" />
-          <p>Wrap dress with neutral heels</p>
-          <div class="rating">⭐️⭐️⭐️⭐️⭐️</div>
+      <div class="outfit-grid" id="savedOutfitsGrid">
+        <!-- Dynamic content will be loaded here -->
+      </div>
+      
+      <div id="noSavedOutfits" style="display: none;">
+        <div class="no-outfits-message">
+          <h4>No Saved Outfits Yet</h4>
+          <p>Visit our <a href="gallery.html">Gallery</a> to discover and save outfits that inspire you!</p>
+          <a href="gallery.html" class="cta-button">Browse Gallery</a>
         </div>
       </div>
     </section>
@@ -64,8 +101,541 @@
   </main>
 
   <footer>
-    <p>&copy; 2025 StyleAssist. All rights reserved.</p>
+    <p>&copy; 2025 Fitspo. All rights reserved.</p>
   </footer>
   <script src="script.js"></script>
+  <script src="gallery.js"></script>
+  <script>
+    // Load user profile data
+    document.addEventListener('DOMContentLoaded', () => {
+      const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+      const usernameDisplay = document.getElementById('usernameDisplay');
+      const quizStatus = document.getElementById('quizStatus');
+      
+      if (currentUser.username) {
+        usernameDisplay.textContent = currentUser.username;
+      } else if (currentUser.firstName) {
+        // Fallback for existing users without username
+        usernameDisplay.textContent = currentUser.firstName;
+      }
+      
+      // Show quiz status and results
+      if (currentUser.hasCompletedQuiz && currentUser.quizResults) {
+        // User has completed quiz - show results
+        const results = currentUser.quizResults;
+        const completedDate = new Date(results.completedDate).toLocaleDateString();
+        
+        quizStatus.innerHTML = `
+          <div class="quiz-completed">
+            <p><strong>Style Quiz</strong></p>
+            
+            <div class="quiz-results-summary">
+              <h4>Your Style Profile:</h4>
+              <p><strong>Body Shape:</strong> ${capitalizeFirst(results.bodyShape.replace('-', ' '))}</p>
+              <p><strong>Style Preferences:</strong> ${results.stylePreferences.map(s => capitalizeFirst(s)).join(', ')}</p>
+              ${results.measurements.waist ? `<p><strong>Measurements:</strong> Waist: ${results.measurements.waist}", Bust: ${results.measurements.bust}", Hips: ${results.measurements.hips}"</p>` : ''}
+            </div>
+            
+            <button class="quiz-action-btn" onclick="location.href='quiz.html'">Retake Style Quiz</button>
+          </div>
+        `;
+      } else {
+        // User has not completed quiz - prompt them
+        quizStatus.innerHTML = `
+          <div class="quiz-incomplete">
+            <p><strong>Style Quiz Status:</strong> ❗ Not completed</p>
+            <div class="quiz-prompt">
+              <h4>Discover Your Perfect Style!</h4>
+              <p>Take our quick style quiz to get personalized recommendations tailored just for you.</p>
+              <button class="quiz-action-btn primary" onclick="location.href='quiz.html'">Take Style Quiz Now</button>
+            </div>
+          </div>
+        `;
+      }
+      
+      // Load saved outfits
+      loadSavedOutfits();
+      
+      // Load user stats
+      loadUserStats();
+      
+      // Setup filter functionality
+      const occasionFilter = document.getElementById('occasion');
+      if (occasionFilter) {
+        occasionFilter.addEventListener('change', loadSavedOutfits);
+      }
+    });
+
+
+    
+    // Load saved outfits from gallery system
+    function loadSavedOutfits() {
+      console.log('loadSavedOutfits function called!');
+      
+      const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+      const savedOutfitIds = currentUser.savedOutfits || [];
+      const filterValue = document.getElementById('occasion').value;
+      const savedOutfitsGrid = document.getElementById('savedOutfitsGrid');
+      const noSavedOutfits = document.getElementById('noSavedOutfits');
+      
+      console.log('User data:', currentUser);
+      console.log('Saved outfit IDs:', savedOutfitIds);
+      console.log('Filter value:', filterValue);
+      console.log('DOM elements found:', {
+        savedOutfitsGrid: !!savedOutfitsGrid,
+        noSavedOutfits: !!noSavedOutfits,
+        occasionFilter: !!document.getElementById('occasion')
+      });
+      
+      if (savedOutfitIds.length === 0) {
+        savedOutfitsGrid.innerHTML = '';
+        noSavedOutfits.style.display = 'block';
+        return;
+      }
+      
+      // Get all available outfits from gallery manager
+      let allOutfits = [];
+      
+      if (window.galleryManager && window.galleryManager.getAllGalleryData) {
+        allOutfits = window.galleryManager.getAllGalleryData();
+        console.log('Got outfits from gallery manager:', allOutfits.length);
+      } else {
+        // Fallback to stored gallery data
+        const storedGallery = JSON.parse(localStorage.getItem('fullGalleryData') || '[]');
+        const userUploads = JSON.parse(localStorage.getItem('userGalleryUploads') || '[]');
+        
+        if (storedGallery.length > 0) {
+          allOutfits = storedGallery;
+        } else {
+          // Default gallery data (should match gallery.js)
+          allOutfits = [
+            { id: 1, src: 'outfit1.jpg', title: 'Casual Chic Ensemble', category: 'casual', description: 'Perfect for weekend brunch' },
+            { id: 2, src: 'outfit2.jpg', title: 'Bold Print Statement', category: 'trendy', description: 'Eye-catching prints for confident style' },
+            { id: 3, src: 'outfit3.jpg', title: 'Classic Professional', category: 'professional', description: 'Timeless office elegance' },
+            { id: 4, src: 'gallery-outfit4.jpg', title: 'Evening Glamour', category: 'formal', description: 'Sophisticated night out look' },
+            { id: 5, src: 'gallery-outfit5.jpg', title: 'Boho Casual', category: 'casual', description: 'Relaxed bohemian vibes' },
+            { id: 6, src: 'gallery-outfit6.jpg', title: 'Modern Minimalist', category: 'classic', description: 'Clean lines and neutral tones' },
+            { id: 7, src: 'gallery-outfit7.jpg', title: 'Street Style Edge', category: 'trendy', description: 'Urban fashion forward' },
+            { id: 8, src: 'gallery-outfit8.jpg', title: 'Business Casual', category: 'professional', description: 'Professional yet approachable' },
+            { id: 9, src: 'gallery-outfit9.jpg', title: 'Romantic Feminine', category: 'classic', description: 'Soft and elegant styling' },
+            { id: 10, src: 'gallery-outfit10.jpg', title: 'Cocktail Ready', category: 'formal', description: 'Perfect for special occasions' },
+            { id: 11, src: 'gallery-outfit11.jpg', title: 'Sporty Chic', category: 'casual', description: 'Athletic meets fashion' },
+            { id: 12, src: 'gallery-outfit12.jpg', title: 'Vintage Inspired', category: 'trendy', description: 'Retro with modern twist' },
+            ...userUploads
+          ];
+        }
+        console.log('Using fallback gallery data:', allOutfits.length);
+      }
+      
+      // Filter to get saved outfits
+      let savedOutfits = allOutfits.filter(outfit => savedOutfitIds.includes(outfit.id));
+      console.log('Found saved outfits:', savedOutfits.length, savedOutfits);
+      
+      // Apply category filter
+      if (filterValue !== 'all') {
+        savedOutfits = savedOutfits.filter(outfit => outfit.category === filterValue);
+      }
+      
+      if (savedOutfits.length === 0) {
+        savedOutfitsGrid.innerHTML = '<div class="no-results">No saved outfits found for this category.</div>';
+        noSavedOutfits.style.display = 'none';
+        return;
+      }
+      
+      noSavedOutfits.style.display = 'none';
+      
+      // Show all saved outfits on profile page
+      savedOutfitsGrid.innerHTML = savedOutfits.map(outfit => `
+        <div class="outfit-card" data-id="${outfit.id}">
+          <img src="${outfit.image || outfit.src}" alt="${outfit.title}" loading="lazy" />
+          <div class="outfit-info">
+            <p class="outfit-title">${outfit.title}</p>
+            <p class="outfit-category">${capitalizeFirst(outfit.category)}</p>
+            <p class="outfit-description">${outfit.description}</p>
+          </div>
+          <button class="remove-outfit-btn" onclick="removeFromSaved(${outfit.id})">
+            Remove
+          </button>
+        </div>
+      `).join('');
+    }
+
+
+
+    // Function to remove an outfit from saved (uses gallery system)
+    window.removeFromSaved = function(outfitId) {
+      const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+      
+      if (currentUser.savedOutfits && currentUser.savedOutfits.includes(outfitId)) {
+        // Remove from saved outfits array
+        currentUser.savedOutfits = currentUser.savedOutfits.filter(id => id !== outfitId);
+        
+        // Update currentUser in localStorage
+        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+        
+        // Update the user in the users array
+        const users = JSON.parse(localStorage.getItem('styleAssistUsers') || '[]');
+        const userIndex = users.findIndex(user => user.userId === currentUser.userId);
+        if (userIndex !== -1) {
+          users[userIndex] = currentUser;
+          localStorage.setItem('styleAssistUsers', JSON.stringify(users));
+        }
+        
+        console.log('Outfit', outfitId, 'removed from saved');
+        
+        // Use gallery manager to decrement save count if available
+        if (window.galleryManager && window.galleryManager.decrementSaveCount) {
+          window.galleryManager.decrementSaveCount(outfitId, currentUser.userId);
+        }
+        
+        // Refresh saved outfits display
+        loadSavedOutfits();
+        
+        return true;
+      }
+      return false;
+    };
+
+
+    
+    function removeFromSaved(outfitId) {
+      const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+      
+      if (currentUser.savedOutfits) {
+        currentUser.savedOutfits = currentUser.savedOutfits.filter(id => id !== outfitId);
+        
+        // Update currentUser in localStorage
+        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+        
+        // Update the user in the users array
+        const users = JSON.parse(localStorage.getItem('styleAssistUsers') || '[]');
+        const userIndex = users.findIndex(user => user.userId === currentUser.userId);
+        if (userIndex !== -1) {
+          users[userIndex] = currentUser;
+          localStorage.setItem('styleAssistUsers', JSON.stringify(users));
+        }
+        
+        // Reload the saved outfits display
+        loadSavedOutfits();
+        
+        // Show message
+        showMessage('Outfit removed from saved items', 'info');
+      }
+    }
+    
+    function showMessage(message, type) {
+      const existingMessage = document.querySelector('.message');
+      if (existingMessage) {
+        existingMessage.remove();
+      }
+
+      const messageDiv = document.createElement('div');
+      messageDiv.className = `message ${type}`;
+      messageDiv.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 15px 20px;
+        border-radius: 8px;
+        color: white;
+        font-weight: 600;
+        z-index: 3000;
+        max-width: 400px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        ${type === 'error' ? 'background-color: #e74c3c;' : 
+          type === 'success' ? 'background-color: #27ae60;' : 'background-color: #3498db;'}
+      `;
+      messageDiv.textContent = message;
+      
+      document.body.appendChild(messageDiv);
+      
+      setTimeout(() => {
+        messageDiv.remove();
+      }, 3000);
+    }
+    
+    function capitalizeFirst(str) {
+      return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+
+    function loadUserStats() {
+      const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+      // Get data from gallery manager if available, otherwise from localStorage
+      let galleryData = [];
+      if (window.galleryManager) {
+        galleryData = window.galleryManager.getAllGalleryData();
+      } else {
+        // Fallback: try saved full gallery data first, then combine preset data with user uploads
+        galleryData = JSON.parse(localStorage.getItem('fullGalleryData') || '[]');
+        if (galleryData.length === 0) {
+          const userUploads = JSON.parse(localStorage.getItem('userGalleryUploads') || '[]');
+          galleryData = [
+            { id: 1, src: 'outfit3.jpg', title: 'Edgy Street-wear', category: 'casual', description: 'Urban fashion forward', uploadDate: '2025-11-09T18:00:00.000Z' },
+            { id: 2, src: 'gallery1.jpeg', title: 'Classic Professional', category: 'professional', description: 'Timeless office elegance', uploadDate: '2025-11-09T19:00:00.000Z' },
+            { id: 3, src: 'outfit2.jpg', title: 'Bold Print Statement', category: 'casual', description: 'Eye-catching prints for confident style', uploadDate: '2025-11-09T20:00:00.000Z' },
+            { id: 4, src: 'outfit1.jpg', title: 'Mini Dress Madness', category: 'trendy', description: 'Soft and elegant styling', uploadDate: '2025-11-09T21:00:00.000Z' },
+            ...userUploads
+          ];
+        }
+      }
+      
+      // Filter user's uploads
+      const userUploads = galleryData.filter(item => item.uploadedByUserId === currentUser.userId);
+      
+      // Calculate total likes received
+      let totalLikes = 0;
+      userUploads.forEach(item => {
+        if (item.likes && Array.isArray(item.likes)) {
+          totalLikes += item.likes.length;
+        }
+      });
+      
+      // Update stats display
+      document.getElementById('totalLikes').textContent = totalLikes;
+      document.getElementById('totalUploads').textContent = userUploads.length;
+    }
+
+
+
+    // Function to refresh profile data (can be called from other pages)
+    function refreshProfile() {
+      loadUserStats();
+      loadSavedOutfits();
+    }
+
+    // Refresh data when user returns to the page
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden) {
+        refreshProfile();
+      }
+    });
+
+    // Also refresh when page becomes active (for navigation from gallery)
+    window.addEventListener('focus', () => {
+      refreshProfile();
+    });
+
+    // Initial load when everything is ready
+    window.addEventListener('load', () => {
+      setTimeout(refreshProfile, 100); // Small delay to ensure gallery.js is loaded
+    });
+
+    // Test function to manually check saved outfits
+    window.testSavedOutfits = function() {
+      console.log('=== MANUAL SAVED OUTFITS TEST ===');
+      const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+      console.log('Current user:', currentUser);
+      console.log('Saved outfits:', currentUser.savedOutfits);
+      
+      // Try to call the function manually
+      loadSavedOutfits();
+    };
+
+    // Debug function to help troubleshoot gallery data
+    window.debugProfileGallery = function() {
+      const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+      const userGalleryUploads = JSON.parse(localStorage.getItem('userGalleryUploads') || '[]');
+      const fullGalleryData = JSON.parse(localStorage.getItem('fullGalleryData') || '[]');
+      
+      console.log('=== PROFILE GALLERY DEBUG ===');
+      console.log('Current User:', currentUser);
+      console.log('User Gallery Uploads:', userGalleryUploads);
+      console.log('Full Gallery Data Length:', fullGalleryData.length);
+      console.log('User uploads in full data:', fullGalleryData.filter(item => 
+        item.uploadedByUserId === currentUser.userId || 
+        item.isUserUpload === true
+      ));
+      console.log('Gallery Manager Available:', !!window.galleryManager);
+      if (window.galleryManager) {
+        console.log('Gallery Manager Data:', window.galleryManager.getAllGalleryData());
+      }
+    };
+
+
+
+    // Also refresh when page gains focus
+    window.addEventListener('focus', () => {
+      refreshProfile();
+    });
+
+    // Delete Account Functionality
+    document.getElementById('deleteAccountBtn').addEventListener('click', function() {
+      // Show confirmation dialog with multiple confirmations for safety
+      const userConfirmation1 = confirm(
+        'Are you sure you want to delete your account?\n\n' +
+        'This action will permanently remove:\n' +
+        '• Your profile and personal information\n' +
+        '• All your saved outfits\n' +
+        '• All your uploaded outfits\n' +
+        '• Your quiz results and preferences\n' +
+        '• All likes and interactions\n\n' +
+        'This action CANNOT be undone!'
+      );
+      
+      if (!userConfirmation1) return;
+      
+      // Second confirmation with password requirement
+      const password1 = prompt(
+        'To confirm account deletion, please enter your account password:'
+      );
+      
+      if (!password1) {
+        alert('Account deletion cancelled. Password is required.');
+        return;
+      }
+      
+      // Third confirmation - enter password again
+      const password2 = prompt(
+        'Please enter your password again to confirm:'
+      );
+      
+      if (!password2) {
+        alert('Account deletion cancelled. Password confirmation is required.');
+        return;
+      }
+      
+      if (password1 !== password2) {
+        alert('Account deletion cancelled. Passwords do not match.');
+        return;
+      }
+      
+      // Verify password matches the user's actual password
+      if (!verifyUserPassword(password1)) {
+        alert('Account deletion cancelled. Incorrect password.');
+        return;
+      }
+      
+      // Final confirmation
+      const finalConfirmation = confirm(
+        'This will permanently delete your account and all associated data.\n\n' +
+        'Are you sure you want to continue?'
+      );
+      
+      if (!finalConfirmation) return;
+      
+      deleteUserAccount();
+    });
+
+    function verifyUserPassword(enteredPassword) {
+      try {
+        const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+        
+        // Get all users to find the complete user data including password
+        const users = JSON.parse(localStorage.getItem('styleAssistUsers') || '[]');
+        const userWithPassword = users.find(user => user.userId === currentUser.userId);
+        
+        if (!userWithPassword || !userWithPassword.password) {
+          console.error('Unable to verify password: user data not found');
+          return false;
+        }
+        
+        // For demo purposes, we're storing passwords in plain text
+        // In a real application, you would hash and compare passwords securely
+        return userWithPassword.password === enteredPassword;
+        
+      } catch (error) {
+        console.error('Error verifying password:', error);
+        return false;
+      }
+    }
+
+    function deleteUserAccount() {
+      try {
+        const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+        const userId = currentUser.userId;
+        
+        if (!userId) {
+          alert('Error: Unable to identify user account.');
+          return;
+        }
+
+        // 1. Remove user from styleAssistUsers array
+        let users = JSON.parse(localStorage.getItem('styleAssistUsers') || '[]');
+        users = users.filter(user => user.userId !== userId);
+        localStorage.setItem('styleAssistUsers', JSON.stringify(users));
+
+        // 2. Remove all user's uploaded outfits from gallery data
+        let userGalleryUploads = JSON.parse(localStorage.getItem('userGalleryUploads') || '[]');
+        userGalleryUploads = userGalleryUploads.filter(outfit => outfit.uploadedByUserId !== userId);
+        localStorage.setItem('userGalleryUploads', JSON.stringify(userGalleryUploads));
+
+        // 3. Remove user's uploads from full gallery data
+        let fullGalleryData = JSON.parse(localStorage.getItem('fullGalleryData') || '[]');
+        fullGalleryData = fullGalleryData.filter(outfit => outfit.uploadedByUserId !== userId);
+        localStorage.setItem('fullGalleryData', JSON.stringify(fullGalleryData));
+
+        // 4. Remove user's likes from all outfits in gallery data
+        fullGalleryData.forEach(outfit => {
+          if (outfit.likes && Array.isArray(outfit.likes)) {
+            outfit.likes = outfit.likes.filter(likeUserId => likeUserId !== userId);
+          }
+          if (outfit.savedBy && Array.isArray(outfit.savedBy)) {
+            outfit.savedBy = outfit.savedBy.filter(saveUserId => saveUserId !== userId);
+          }
+        });
+        localStorage.setItem('fullGalleryData', JSON.stringify(fullGalleryData));
+
+        // 5. Update gallery manager if available
+        if (window.galleryManager) {
+          // Remove user's likes and saves from gallery manager
+          window.galleryManager.removeUserFromAllInteractions(userId);
+          // Refresh gallery data
+          window.galleryManager.refreshGallery();
+        }
+
+        // 6. Clear current user session
+        localStorage.removeItem('currentUser');
+        localStorage.setItem('isLoggedIn', 'false');
+
+        // 7. Clear any pending quiz data for this user
+        const pendingQuizAnswers = sessionStorage.getItem('pendingQuizAnswers');
+        if (pendingQuizAnswers) {
+          sessionStorage.removeItem('pendingQuizAnswers');
+        }
+
+        // 8. Show success message and redirect
+        alert('Account successfully deleted. You will be redirected to the home page.');
+        
+        // Update navigation
+        if (typeof updateNavigation === 'function') {
+          updateNavigation();
+        }
+        
+        // Redirect to home page
+        window.location.href = 'index.html';
+
+      } catch (error) {
+        console.error('Error deleting account:', error);
+        alert('An error occurred while deleting your account. Please try again or contact support.');
+      }
+    }
+
+    // Make refresh function globally available
+    window.refreshProfile = refreshProfile;
+  </script>
+
+  <!-- Image Crop Modal -->
+  <div class="crop-modal" id="cropModal" style="display: none;">
+    <div class="crop-modal-content">
+      <div class="crop-modal-header">
+        <h3>Crop Your Profile Picture</h3>
+        <button class="close-crop-modal" id="closeCropModal">&times;</button>
+      </div>
+      <div class="crop-container">
+        <canvas id="cropCanvas"></canvas>
+      </div>
+      <div class="crop-instructions">
+        <p>📍 <strong>Tip:</strong> Drag the crop area to reposition • Drag corners to resize</p>
+      </div>
+      <div class="crop-controls">
+        <button class="crop-btn cancel" id="cancelCrop">Cancel</button>
+        <button class="crop-btn save" id="saveCrop">Save Profile Picture</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+  <script src="gallery.js"></script>
+  <script src="profile-image.js"></script>
 </body>
 </html>

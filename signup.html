@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fitspo | Sign Up</title>
+  <link rel="stylesheet" href="signup.css">
+</head>
+<body>
+  <header>
+    <div class="logo"><a href="index.html">Fitspo</a></div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
+        <li><a href="quiz.html">Quiz</a></li>
+        <li><a href="login.html">Login</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="signup-container">
+    <div class="signup-box">
+      <h1>Create Your Fitspo Account</h1>
+      <p>Join us to get personalized style recommendations!</p>
+      
+      <form id="signupForm" class="signup-form">
+        <!-- Name Section -->
+        <div class="form-section">
+          <h3>Personal Information</h3>
+          
+          <div class="name-row">
+            <div class="form-group">
+              <label for="firstName">First Name *</label>
+              <input type="text" id="firstName" name="firstName" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="middleName">Middle Name</label>
+              <input type="text" id="middleName" name="middleName">
+            </div>
+            
+            <div class="form-group">
+              <label for="lastName">Last Name *</label>
+              <input type="text" id="lastName" name="lastName" required>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="email">Email Address *</label>
+            <input type="email" id="email" name="email" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="username">Username *</label>
+            <input type="text" id="username" name="username" required minlength="3" maxlength="20" title="Username can only contain letters, numbers, and underscores">
+            <small class="form-hint">3-20 characters, letters, numbers, and underscores only</small>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="dateOfBirth">Date of Birth *</label>
+              <input type="date" id="dateOfBirth" name="dateOfBirth" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="gender">Gender *</label>
+              <select id="gender" name="gender" required>
+                <option value="">Select Gender</option>
+                <option value="female">Female</option>
+                <option value="male">Male</option>
+                <option value="non-binary">Non-binary</option>
+                <option value="prefer-not-to-say">Prefer not to say</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Security Section -->
+        <div class="form-section">
+          <h3>Account Security</h3>
+          
+          <div class="form-group">
+            <label for="password">Password *</label>
+            <input type="password" id="password" name="password" required minlength="8">
+            <small class="form-hint">Must be at least 8 characters long</small>
+          </div>
+          
+          <div class="form-group">
+            <label for="confirmPassword">Confirm Password *</label>
+            <input type="password" id="confirmPassword" name="confirmPassword" required>
+            <small class="form-hint" id="passwordMatch"></small>
+          </div>
+        </div>
+
+        <!-- Preferences Section -->
+        <div class="form-section">
+          <h3>Communication Preferences</h3>
+          
+          <div class="checkbox-group">
+            <label class="checkbox-label">
+              <input type="checkbox" id="emailNotifications" name="emailNotifications" checked>
+              <span class="checkmark"></span>
+              <div class="checkbox-content">
+                <strong>Email Notifications</strong>
+                <p>Receive updates on new trends, style tips, personalized recommendations, and exclusive offers</p>
+              </div>
+            </label>
+          </div>
+          
+          <div class="checkbox-group">
+            <label class="checkbox-label">
+              <input type="checkbox" id="termsAccepted" name="termsAccepted" required>
+              <span class="checkmark"></span>
+              <div class="checkbox-content">
+                <strong>Terms & Conditions *</strong>
+                <p>I agree to the <a href="#" class="link">Terms of Service</a> and <a href="#" class="link">Privacy Policy</a></p>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <button type="submit" class="signup-btn" id="signupBtn" disabled>Create Account</button>
+        
+        <div class="login-redirect">
+          <p>Already have an account? <a href="login.html" class="link">Log in here</a></p>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Fitspo. All rights reserved.</p>
+  </footer>
+
+  <script src="script.js"></script>
+  <script src="signup.js"></script>
+</body>
+</html>

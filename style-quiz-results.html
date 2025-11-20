@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fitspo | Style Quiz Results</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .quiz-results-container {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    .back-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #a0522d;
+      color: white;
+      text-decoration: none;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-weight: 600;
+      margin-bottom: 30px;
+      transition: background 0.3s ease;
+    }
+
+    .back-button:hover {
+      background: #8a4125;
+    }
+
+    .quiz-results-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    
+    .quiz-prompt {
+      text-align: center;
+    }
+
+    .quiz-results-header h1 {
+      color: #a0522d;
+      margin-bottom: 10px;
+    }
+
+    .quiz-completed,
+    .quiz-incomplete {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+      margin-bottom: 30px;
+    }
+
+    .quiz-completed {
+      border-left: 4px solid #27ae60;
+    }
+
+    .quiz-incomplete {
+      border-left: 4px solid #f39c12;
+    }
+
+    .quiz-results-summary {
+      background: #f8f4f0;
+      padding: 25px;
+      border-radius: 10px;
+      margin: 20px 0;
+    }
+
+    .quiz-results-summary h4 {
+      color: #a0522d;
+      margin-bottom: 20px;
+      font-size: 20px;
+    }
+
+    .quiz-results-summary p {
+      margin-bottom: 12px;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    .quiz-prompt {
+      background: #fff8e7;
+      padding: 30px;
+      border-radius: 10px;
+      margin: 20px 0;
+      text-align: center;
+    }
+
+    .quiz-prompt h4 {
+      color: #a0522d;
+      margin-bottom: 15px;
+      font-size: 24px;
+    }
+
+    .quiz-prompt p {
+      color: #666;
+      margin-bottom: 25px;
+      line-height: 1.6;
+    }
+
+    .quiz-action-btn {
+      padding: 15px 30px;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 16px;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .quiz-action-btn.primary {
+      background: #a0522d;
+      color: white;
+    }
+
+    .quiz-action-btn.primary:hover {
+      background: #8a4125;
+      transform: translateY(-2px);
+    }
+
+    .quiz-action-btn.secondary {
+      background: #f8f9fa;
+      color: #a0522d;
+      border: 2px solid #a0522d;
+    }
+
+    .quiz-action-btn.secondary:hover {
+      background: #a0522d;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <script>
+    // Check if user is logged in, redirect if not
+    const isLoggedIn = localStorage.getItem("isLoggedIn");
+    if (isLoggedIn !== "true") {
+      alert("Please log in to access your style quiz results.");
+      window.location.href = "login.html";
+    }
+  </script>
+  
+  <header>
+    <div class="logo"><a href="index.html">Fitspo</a></div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
+        <li><a href="quiz.html">Quiz</a></li>
+        <li><a href="profile.html">Profile</a></li>
+        <li><a href="#" id="logoutBtn">Log Out</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="quiz-results-container">
+    <a href="profile.html" class="back-button">
+      ← Back to Profile
+    </a>
+
+    <div class="quiz-results-header">
+      <h1>Your Style Quiz Results</h1>
+      <p>Discover your personal style profile and get tailored recommendations</p>
+    </div>
+
+    <div id="quizResultsContent">
+      <!-- Content will be populated by JavaScript -->
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Fitspo. All rights reserved.</p>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+      const quizResultsContent = document.getElementById('quizResultsContent');
+      
+      // Show quiz status and results
+      if (currentUser.hasCompletedQuiz && currentUser.quizResults) {
+        // User has completed quiz - show results
+        const results = currentUser.quizResults;
+        const completedDate = new Date(results.completedDate).toLocaleDateString();
+        
+        quizResultsContent.innerHTML = `
+          <div class="quiz-completed">
+            <p><strong>Style Quiz Status:</strong> ✅ Completed on ${completedDate}</p>
+            
+            <div class="quiz-results-summary">
+              <h4>Your Personal Style Profile:</h4>
+              <p><strong>Body Shape:</strong> ${capitalizeFirst(results.bodyShape || results.bodyType || 'Not specified')}</p>
+              <p><strong>Style Preferences:</strong> ${results.stylePreferences ? results.stylePreferences.map(s => capitalizeFirst(s)).join(', ') : 'Not specified'}</p>
+              <p><strong>Favorite Colors:</strong> ${results.favoriteColors ? results.favoriteColors.map(c => capitalizeFirst(c)).join(', ') : 'Not specified'}</p>
+              ${results.measurements && results.measurements.waist ? `<p><strong>Measurements:</strong> Waist: ${results.measurements.waist}", Bust: ${results.measurements.bust}", Hips: ${results.measurements.hips}"</p>` : ''}
+              ${results.primaryStyle ? `<p><strong>Primary Style:</strong> ${capitalizeFirst(results.primaryStyle)}</p>` : ''}
+              ${results.colorPreferences ? `<p><strong>Color Preferences:</strong> ${results.colorPreferences.map(c => capitalizeFirst(c)).join(', ')}</p>` : ''}
+            </div>
+            
+            <div style="text-align: center; margin-top: 30px;">
+              <a href="quiz.html" class="quiz-action-btn secondary">Retake Style Quiz</a>
+              <a href="gallery.html" class="quiz-action-btn primary" style="margin-left: 15px;">Browse Recommended Styles</a>
+            </div>
+          </div>
+        `;
+      } else {
+        // User has not completed quiz - prompt them
+        quizResultsContent.innerHTML = `
+          <div class="quiz-incomplete">
+            <p><strong>Style Quiz Status:</strong> ❗ Not completed yet</p>
+            <div class="quiz-prompt">
+              <h4>Discover Your Perfect Style!</h4>
+              <p>Take our comprehensive style quiz to get personalized recommendations tailored just for you. Learn about your style preferences, get size recommendations, and discover looks that match your personality.</p>
+              <a href="quiz.html" class="quiz-action-btn primary">Take Style Quiz Now</a>
+            </div>
+          </div>
+        `;
+      }
+    });
+    
+    function capitalizeFirst(str) {
+      return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+  </script>
+</body>
+</html>

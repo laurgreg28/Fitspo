@@ -3,17 +3,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>StyleAssist | Home</title>
+  <title>Fitspo | Home</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <header>
-    <div class="logo">StyleAssist</div>
+    <div class="logo"><a href="index.html">Fitspo</a></div>
     <nav>
-      <ul>
+      <ul id="homeNavigation">
         <li><a href="index.html" class="active">Home</a></li>
-        <li><a href="login.html">Login</a></li>
-        <li><a href="profile.html" id="profileLink" style="display: none;">Profile</a></li>
+        <li><a href="gallery.html" id="galleryNavLink">Gallery</a></li>
+        <li><a href="login.html" id="loginNavLink">Login</a></li>
+        <li><a href="quiz.html" id="quizNavLink" style="display: none;">Quiz</a></li>
+        <li><a href="profile.html" id="profileNavLink" style="display: none;">Profile</a></li>
+        <li><a href="#" id="logoutNavLink" style="display: none;">Log Out</a></li>
       </ul>
     </nav>
   </header>
@@ -23,13 +26,11 @@
   <section class="welcome-container">
     <div class="welcome-box">
       <div class="welcome-text">
-        <h1>Welcome to StyleAssist</h1>
+        <h1>Welcome to Fitspo</h1>
         <p>Discover outfits that flatter your body shape, match your vibe, and boost your confidence. Take our quick quiz to get personalized recommendations tailored just for you.</p>
         <a href="quiz.html" class="cta-button">Take the Style Quiz</a>
       </div>
-      <div class="welcome-image">
-        <img src="fashion-hero.png" alt="Stylish models" />
-      </div>
+      
     </div>
   </section>
 
@@ -40,27 +41,36 @@
     <div class="trendy-grid">
       <div class="trend-card">
         <img src="outfit1.jpg" alt="Outfit 1" />
-        <p>Casual chic with denim & neutrals</p>
+        <p>Chic romantic evening mini dress</p>
       </div>
       <div class="trend-card">
         <img src="outfit2.jpg" alt="Outfit 2" />
         <p>Bold prints for confident curves</p>
       </div>
       <div class="trend-card">
-        <img src="outfit3.jpg" alt="Outfit 3" />
-        <p>Layered neutrals for fall</p>
+        <img src="outfit3.jpg?v=2" alt="Streetwear Outfit" />
+        <p>Edgy biker-inspired look</p>
       </div>
       <div class="trend-card">
-        <img src="outfit4.jpg" alt="Outfit 4" />
-        <p>Monochrome magic with a twist</p>
+        <img src="IMG_8794.jpeg" alt="Outfit 4" />
+        <p>Neutrals for the fall</p>
       </div>
     </div>
   </section>
 </main>
 
   <footer>
-    <p>&copy; 2025 StyleAssist. All rights reserved.</p>
+    <p>&copy; 2025 Fitspo. All rights reserved.</p>
   </footer>
+
+  <!-- Image Overlay Modal -->
+  <div class="image-overlay" id="imageOverlay">
+    <span class="close-overlay" id="closeOverlay">&times;</span>
+    <span class="nav-arrow prev-arrow" id="prevArrow">&#8249;</span>
+    <span class="nav-arrow next-arrow" id="nextArrow">&#8250;</span>
+    <img id="overlayImage" src="" alt="Enlarged image">
+    <div class="image-counter" id="imageCounter">1 / 3</div>
+  </div>
 
   <script src="script.js"></script>
 </body>

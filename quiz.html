@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fitspo | Style Quiz</title>
+  <link rel="stylesheet" href="quiz.css">
+</head>
+<body>
+  <header>
+    <div class="logo"><a href="index.html">Fitspo</a></div>
+    <nav>
+      <ul id="quizNavigation">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
+        <li><a href="quiz.html" class="active">Quiz</a></li>
+        <li><a href="login.html" id="loginNavLinkQuiz">Login</a></li>
+        <li><a href="profile.html" id="profileNavLinkQuiz" style="display: none;">Profile</a></li>
+        <li><a href="#" id="logoutNavLinkQuiz" style="display: none;">Log Out</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="quiz-container">
+    <div class="progress-bar">
+      <div class="progress" id="progress"></div>
+    </div>
+
+    <!-- Slide 1: Body Shape -->
+    <div class="quiz-slide active" id="slide1">
+      <div class="slide-content">
+        <h2>What's your body shape?</h2>
+        <p>Choose the shape that best describes your body type:</p>
+        <div class="options-grid">
+          <label class="option-card">
+            <input type="radio" name="bodyShape" value="round">
+            <div class="card-content">
+              <div class="shape-icon round-shape"></div>
+              <span>Round</span>
+            </div>
+          </label>
+          <label class="option-card">
+            <input type="radio" name="bodyShape" value="hourglass">
+            <div class="card-content">
+              <div class="shape-icon hourglass-shape"></div>
+              <span>Hourglass</span>
+            </div>
+          </label>
+          <label class="option-card">
+            <input type="radio" name="bodyShape" value="rectangle">
+            <div class="card-content">
+              <div class="shape-icon rectangle-shape"></div>
+              <span>Rectangle</span>
+            </div>
+          </label>
+          <label class="option-card">
+            <input type="radio" name="bodyShape" value="inverted-triangle">
+            <div class="card-content">
+              <div class="shape-icon triangle-shape"></div>
+              <span>Inverted Triangle</span>
+            </div>
+          </label>
+          <label class="option-card">
+            <input type="radio" name="bodyShape" value="apple">
+            <div class="card-content">
+              <div class="shape-icon apple-shape"></div>
+              <span>Apple</span>
+            </div>
+          </label>
+          <label class="option-card">
+            <input type="radio" name="bodyShape" value="athletic">
+            <div class="card-content">
+              <div class="shape-icon athletic-shape"></div>
+              <span>Athletic</span>
+            </div>
+          </label>
+        </div>
+        <button class="next-btn" id="nextBtn1" disabled>Next</button>
+      </div>
+    </div>
+
+    <!-- Slide 2: Measurements -->
+    <div class="quiz-slide" id="slide2">
+      <div class="slide-content">
+        <h2>Tell us your measurements</h2>
+        <p>Help us find the perfect fit for you:</p>
+        <div class="measurements-form">
+          <div class="measurement-group">
+            <label for="waist">Waist Size (inches)</label>
+            <input type="number" id="waist" name="waist" placeholder="e.g., 28" min="20" max="60">
+          </div>
+          <div class="measurement-group">
+            <label for="bust">Bust/Chest Size (inches)</label>
+            <input type="number" id="bust" name="bust" placeholder="e.g., 34" min="28" max="60">
+          </div>
+          <div class="measurement-group">
+            <label for="hips">Hip Size (inches)</label>
+            <input type="number" id="hips" name="hips" placeholder="e.g., 36" min="28" max="60">
+          </div>
+          <div class="measurement-group">
+            <label for="shoes">Shoe Size</label>
+            <input type="number" id="shoes" name="shoes" placeholder="e.g., 8" min="4" max="15" step="0.5">
+          </div>
+          <div class="measurement-group">
+            <label for="height">Height (feet and inches)</label>
+            <div class="height-inputs">
+              <input type="number" id="feet" name="feet" placeholder="5" min="4" max="7">
+              <span>ft</span>
+              <input type="number" id="inches" name="inches" placeholder="6" min="0" max="11">
+              <span>in</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="privacy-option">
+          <label class="privacy-checkbox">
+            <input type="checkbox" id="measurementsPublic" name="measurementsPublic">
+            <span class="checkmark"></span>
+            <span class="privacy-text">Make my measurements visible on my public profile</span>
+          </label>
+          <p class="privacy-note">Other users will be able to see your measurements when viewing your profile. You can change this setting later.</p>
+        </div>
+        
+        <div class="nav-buttons">
+          <button class="prev-btn" id="prevBtn2">Previous</button>
+          <button class="next-btn" id="nextBtn2" disabled>Next</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 3: Style Preferences -->
+    <div class="quiz-slide" id="slide3">
+      <div class="slide-content">
+        <h2>What's your style preference?</h2>
+        <p>Choose the styles that resonate with you (select multiple):</p>
+        <div class="style-preferences">
+          <label class="style-option">
+            <input type="checkbox" name="stylePreference" value="casual">
+            <div class="style-card">
+              <span class="style-name">Casual</span>
+              <span class="style-desc">Comfortable, relaxed, everyday wear</span>
+            </div>
+          </label>
+          <label class="style-option">
+            <input type="checkbox" name="stylePreference" value="professional">
+            <div class="style-card">
+              <span class="style-name">Professional</span>
+              <span class="style-desc">Business attire, office-appropriate</span>
+            </div>
+          </label>
+          <label class="style-option">
+            <input type="checkbox" name="stylePreference" value="bohemian">
+            <div class="style-card">
+              <span class="style-name">Bohemian</span>
+              <span class="style-desc">Free-spirited, artistic, flowing</span>
+            </div>
+          </label>
+          <label class="style-option">
+            <input type="checkbox" name="stylePreference" value="minimalist">
+            <div class="style-card">
+              <span class="style-name">Minimalist</span>
+              <span class="style-desc">Clean lines, neutral colors, simple</span>
+            </div>
+          </label>
+          <label class="style-option">
+            <input type="checkbox" name="stylePreference" value="trendy">
+            <div class="style-card">
+              <span class="style-name">Trendy</span>
+              <span class="style-desc">Fashion-forward, current trends</span>
+            </div>
+          </label>
+          <label class="style-option">
+            <input type="checkbox" name="stylePreference" value="classic">
+            <div class="style-card">
+              <span class="style-name">Classic</span>
+              <span class="style-desc">Timeless, elegant, sophisticated</span>
+            </div>
+          </label>
+          <label class="style-option">
+            <input type="checkbox" name="stylePreference" value="edgy">
+            <div class="style-card">
+              <span class="style-name">Edgy</span>
+              <span class="style-desc">Bold, daring, statement pieces</span>
+            </div>
+          </label>
+          <label class="style-option">
+            <input type="checkbox" name="stylePreference" value="romantic">
+            <div class="style-card">
+              <span class="style-name">Romantic</span>
+              <span class="style-desc">Feminine, soft, flowy fabrics</span>
+            </div>
+          </label>
+        </div>
+        <div class="nav-buttons">
+          <button class="prev-btn" id="prevBtn3">Previous</button>
+          <button class="next-btn" id="nextBtn3" disabled>Next</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slides 4-13: One question per slide -->
+    <!-- Each question is its own slide: slide4..slide13 -->
+    <div class="quiz-slide" id="slide4">
+      <div class="slide-content">
+        <h2>1) When dressing for the day, which is your priority?</h2>
+        <div class="question">
+          <label><input type="radio" name="q1" value="A"><span class="option-text">A) Comfort and practicality.</span></label>
+            <label><input type="radio" name="q1" value="B"><span class="option-text">B) Making a statement and being noticed.</span></label>
+            <label><input type="radio" name="q1" value="C"><span class="option-text">C) Looking polished and put-together.</span></label>
+            <label><input type="radio" name="q1" value="D"><span class="option-text">D) Expressing my creativity and mood.</span></label>
+        </div>
+        <div class="nav-buttons">
+          <button class="prev-btn" id="prevBtn4">Previous</button>
+          <button class="next-btn" id="nextBtn4" disabled>Next</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="quiz-slide" id="slide5">
+      <div class="slide-content">
+        <h2>2) Which color palette dominates your current wardrobe?</h2>
+        <div class="question">
+          <label><input type="radio" name="q2" value="A"><span class="option-text">A) Mostly neutrals (black, white, gray, beige).</span></label>
+            <label><input type="radio" name="q2" value="B"><span class="option-text">B) Rich, jewel tones (emerald, sapphire, deep burgundy).</span></label>
+            <label><input type="radio" name="q2" value="C"><span class="option-text">C) Bright, primary, or pastel colors.</span></label>
+            <label><input type="radio" name="q2" value="D"><span class="option-text">D) Earth tones (browns, creams, olive green) and denim.</span></label>
+        </div>
+        <div class="nav-buttons">
+          <button class="prev-btn" id="prevBtn5">Previous</button>
+          <button class="next-btn" id="nextBtn5" disabled>Next</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="quiz-slide" id="slide6">
+      <div class="slide-content">
+        <h2>3) Describe your preferred silhouette or fit.</h2>
+        <div class="question">
+          <label><input type="radio" name="q3" value="A"><span class="option-text">A) Relaxed and oversized.</span></label>
+            <label><input type="radio" name="q3" value="B"><span class="option-text">B) Tailored, structured, and well-defined.</span></label>
+            <label><input type="radio" name="q3" value="C"><span class="option-text">C) Flowing, airy, and bohemian.</span></label>
+            <label><input type="radio" name="q3" value="D"><span class="option-text">D) Fitted, trendy, and slightly revealing.</span></label>
+        </div>
+        <div class="nav-buttons">
+          <button class="prev-btn" id="prevBtn6">Previous</button>
+          <button class="next-btn" id="nextBtn6" disabled>Next</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="quiz-slide" id="slide7">
+      <div class="slide-content">
+        <h2>4) What accessory do you gravitate towards most often?</h2>
+        <div class="question">
+          <label><input type="radio" name="q4" value="A"><span class="option-text">A) Minimalist jewelry, a simple watch, or no accessories at all.</span></label>
+            <label><input type="radio" name="q4" value="B"><span class="option-text">B) A high-quality leather bag or belt.</span></label>
+            <label><input type="radio" name="q4" value="C"><span class="option-text">C) Statement pieces, unique vintage finds, or layered necklaces.</span></label>
+            <label><input type="radio" name="q4" value="D"><span class="option-text">D) Trendy sunglasses or chunky sneakers.</span></label>
+        </div>
+        <div class="nav-buttons">
+          <button class="prev-btn" id="prevBtn7">Previous</button>
+          <button class="next-btn" id="nextBtn7" disabled>Next</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="quiz-slide" id="slide8">
+      <div class="slide-content">
+        <h2>5) If you had to wear one shoe style for a week, what would it be?</h2>
+        <div class="question">
+          <label><input type="radio" name="q5" value="A"><span class="option-text">A) Clean white leather sneakers.</span></label>
+            <label><input type="radio" name="q5" value="B"><span class="option-text">B) Classic loafers or pointed-toe pumps.</span></label>
+            <label><input type="radio" name="q5" value="C"><span class="option-text">C) Comfortable boots or sandals.</span></label>
+            <label><input type="radio" name="q5" value="D"><span class="option-text">D) Platform heels or the latest trending shoe style.</span></label>
+        </div>
+        <div class="nav-buttons">
+          <button class="prev-btn" id="prevBtn8">Previous</button>
+          <button class="next-btn" id="nextBtn8" disabled>Next</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="quiz-slide" id="slide9">
+      <div class="slide-content">
+        <h2>6) How do you feel about visible logos or branding?</h2>
+        <div class="question">
+          <label><input type="radio" name="q6" value="A"><span class="option-text">A) I avoid them completely; I prefer quiet quality.</span></label>
+            <label><input type="radio" name="q6" value="B"><span class="option-text">B) I appreciate subtle, heritage logos on luxury items.</span></label>
+            <label><input type="radio" name="q6" value="C"><span class="option-text">C) I like unique graphic tees or band logos.</span></label>
+            <label><input type="radio" name="q6" value="D"><span class="option-text">D) I embrace bold, eye-catching logos and designer names.</span></label>
+        </div>
+        <div class="nav-buttons">
+          <button class="prev-btn" id="prevBtn9">Previous</button>
+          <button class="next-btn" id="nextBtn9" disabled>Next</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="quiz-slide" id="slide10">
+      <div class="slide-content">
+        <h2>7) You need an outfit for a friend’s casual dinner. You choose:</h2>
+        <div class="question">
+          <label><input type="radio" name="q7" value="A"><span class="option-text">A) A well-fitting pair of dark jeans and a cashmere sweater.</span></label>
+            <label><input type="radio" name="q7" value="B"><span class="option-text">B) A structured blazer over a silk blouse and trousers.</span></label>
+            <label><input type="radio" name="q7" value="C"><span class="option-text">C) A printed maxi dress and a denim jacket.</span></label>
+            <label><input type="radio" name="q7" value="D"><span class="option-text">D) An asymmetrical top and faux leather pants.</span></label>
+        </div>
+        <div class="nav-buttons">
+          <button class="prev-btn" id="prevBtn10">Previous</button>
+          <button class="next-btn" id="nextBtn10" disabled>Next</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="quiz-slide" id="slide11">
+      <div class="slide-content">
+        <h2>8) Which fabric texture appeals to you the most?</h2>
+        <div class="question">
+          <label><input type="radio" name="q8" value="A"><span class="option-text">A) Simple cotton, linen, or lightweight wool.</span></label>
+            <label><input type="radio" name="q8" value="B"><span class="option-text">B) Structured tweed, poplin, or premium leather.</span></label>
+            <label><input type="radio" name="q8" value="C"><span class="option-text">C) Lace, velvet, or natural fibers with interesting weaves.</span></label>
+            <label><input type="radio" name="q8" value="D"><span class="option-text">D) Shiny satin, PVC, or distressed denim.</span></label>
+        </div>
+        <div class="nav-buttons">
+          <button class="prev-btn" id="prevBtn11">Previous</button>
+          <button class="next-btn" id="nextBtn11" disabled>Next</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="quiz-slide" id="slide12">
+      <div class="slide-content">
+        <h2>9) How often do you follow major fashion trends (e.g., from runways or social media)?</h2>
+        <div class="question">
+          <label><input type="radio" name="q9" value="A"><span class="option-text">A) Never. I stick to timeless pieces.</span></label>
+            <label><input type="radio" name="q9" value="B"><span class="option-text">B) Occasionally, I incorporate subtle updates into my classic wardrobe.</span></label>
+            <label><input type="radio" name="q9" value="C"><span class="option-text">C) I pick and choose trends that align with my personal taste.</span></label>
+            <label><input type="radio" name="q9" value="D"><span class="option-text">D) Always. I love being ahead of the curve and trying new things.</span></label>
+        </div>
+        <div class="nav-buttons">
+          <button class="prev-btn" id="prevBtn12">Previous</button>
+          <button class="next-btn" id="nextBtn12" disabled>Next</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="quiz-slide" id="slide13">
+      <div class="slide-content">
+        <h2>10) When you look at an outfit, what is the first element that catches your eye?</h2>
+        <div class="question">
+          <label><input type="radio" name="q10" value="A"><span class="option-text">A) The cut and fit of the garment.</span></label>
+            <label><input type="radio" name="q10" value="B"><span class="option-text">B) The quality of the materials used.</span></label>
+            <label><input type="radio" name="q10" value="C"><span class="option-text">C) The interesting mix of patterns or textures.</span></label>
+            <label><input type="radio" name="q10" value="D"><span class="option-text">D) The bold color or dramatic shape.</span></label>
+        </div>
+        <div class="nav-buttons">
+          <button class="prev-btn" id="prevBtn13">Previous</button>
+          <button class="submit-btn" id="submitBtn" disabled>Get My Style Results</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Results slide -->
+    <div class="quiz-slide" id="resultsSlide">
+      <div class="slide-content">
+        <h2>Your Style Profile</h2>
+        <div class="results-content" id="resultsContent">
+          <!-- Results will be populated by JavaScript -->
+        </div>
+        <button class="restart-btn" id="restartBtn">Take Quiz Again</button>
+      </div>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+  <script src="quiz.js"></script>
+</body>
+</html>

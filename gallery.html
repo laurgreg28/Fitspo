@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fitspo | Gallery</title>
+  <link rel="stylesheet" href="gallery.css" />
+</head>
+<body>
+  <header>
+    <div class="logo"><a href="index.html">Fitspo</a></div>
+    <nav>
+      <ul id="galleryNavigation">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="gallery.html" class="active">Gallery</a></li>
+        <li><a href="quiz.html" id="quizNavLink">Quiz</a></li>
+        <li><a href="login.html" id="loginNavLink">Login</a></li>
+        <li><a href="profile.html" id="profileNavLink" style="display: none;">Profile</a></li>
+        <li><a href="#" id="logoutNavLink" style="display: none;">Log Out</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="gallery-container">
+    <div class="gallery-header">
+      <h1>Style Gallery</h1>
+      <p>Discover outfit inspiration and save your favorites</p>
+    </div>
+
+    <div class="gallery-filters">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="casual">Casual</button>
+      <button class="filter-btn" data-filter="professional">Professional</button>
+      <button class="filter-btn" data-filter="formal">Formal</button>
+      <button class="filter-btn" data-filter="trendy">Trendy</button>
+      <button class="filter-btn" data-filter="classic">Classic</button>
+    </div>
+
+    <!-- Upload Section -->
+    <div class="upload-section" id="uploadSection" style="display: none;">
+      <div class="upload-container">
+        <h3>Add Your Style</h3>
+        <p>Share your outfit inspiration with the community</p>
+        <div class="upload-form">
+          <div class="file-upload-area" id="fileUploadArea">
+            <div class="upload-icon">📸</div>
+            <p>Drag & drop your image here or <span class="browse-text">browse</span></p>
+            <input type="file" id="imageUpload" accept="image/*" multiple>
+          </div>
+          <div class="upload-details" id="uploadDetails" style="display: none;">
+            <div class="form-section">
+              <h4>Basic Information</h4>
+              <input type="text" id="imageTitle" placeholder="Give your outfit a title..." maxlength="50" required>
+              <select id="imageCategory" required>
+                <option value="casual">Casual</option>
+                <option value="professional">Professional</option>
+                <option value="formal">Formal</option>
+                <option value="trendy">Trendy</option>
+                <option value="classic">Classic</option>
+              </select>
+              <textarea id="imageDescription" placeholder="Describe your style..." maxlength="150"></textarea>
+            </div>
+            
+            <div class="form-section">
+              <h4>Outfit Details</h4>
+              <div class="brands-container">
+                <label>Brand Names (required)</label>
+                <div class="brand-inputs" id="brandInputs">
+                  <div class="brand-input-group">
+                    <input type="text" class="brand-name-input" placeholder="Brand name" maxlength="50" required>
+                    <button type="button" class="remove-brand-btn" onclick="this.parentElement.remove()" style="display: none;">×</button>
+                  </div>
+                </div>
+                <button type="button" class="add-brand-btn" id="addBrandBtn">+ Add Another Brand</button>
+              </div>
+              
+              <div class="size-container">
+                <label>Size</label>
+                <select id="outfitSize">
+                  <option value="">Select size (optional)</option>
+                  <option value="xxs">XXS</option>
+                  <option value="xs">XS</option>
+                  <option value="s">S</option>
+                  <option value="m">M</option>
+                  <option value="l">L</option>
+                  <option value="xl">XL</option>
+                  <option value="2xl">2XL</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-section">
+              <h4>Social Media (optional)</h4>
+              <div class="social-media-container">
+                <div class="social-media-inputs" id="socialMediaInputs">
+                  <!-- Social media inputs will be added dynamically -->
+                </div>
+                <div class="social-media-options">
+                  <button type="button" class="add-social-btn" data-platform="instagram">+ Instagram</button>
+                  <button type="button" class="add-social-btn" data-platform="tiktok">+ TikTok</button>
+                  <button type="button" class="add-social-btn" data-platform="twitter">+ Twitter</button>
+                  <button type="button" class="add-social-btn" data-platform="pinterest">+ Pinterest</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="upload-actions">
+              <button type="button" id="cancelUpload" class="btn-cancel">Cancel</button>
+              <button type="button" id="submitUpload" class="btn-submit">Add to Gallery</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="gallery-actions">
+      <button class="add-outfit-btn" id="addOutfitBtn">
+        <span>+</span> Add Your Outfit
+      </button>
+    </div>
+
+    <div class="limited-view-notice" id="limitedViewNotice" style="display: none;">
+      <div class="notice-content">
+        <p><a href="login.html">Log in</a> or <a href="signup.html">sign up</a> for full access to the entire gallery!</p>
+      </div>
+    </div>
+
+    <div class="gallery-grid" id="galleryGrid">
+      <!-- Gallery items will be populated by JavaScript -->
+    </div>
+
+    <!-- Blurred Preview Images (shown only in preview mode) -->
+    <div class="blurred-preview-section" id="blurredPreviewSection" style="display: none;">
+      <div class="gallery-grid">
+        <div class="gallery-item blurred-item">
+          <img src="IMG_8785.jpeg" alt="More styles available" class="blurred-image">
+          <div class="blur-overlay">
+            <div class="blur-text">+20 More Styles</div>
+          </div>
+        </div>
+        <div class="gallery-item blurred-item">
+          <img src="IMG_8799.jpeg" alt="More styles available" class="blurred-image">
+          <div class="blur-overlay">
+            <div class="blur-text">Sign Up</div>
+          </div>
+        </div>
+        <div class="gallery-item blurred-item">
+          <img src="IMG_8794.jpeg" alt="More styles available" class="blurred-image">
+          <div class="blur-overlay">
+            <div class="blur-text">To Unlock</div>
+          </div>
+        </div>
+        <div class="gallery-item blurred-item">
+          <img src="IMG_8792.jpeg" alt="More styles available" class="blurred-image">
+          <div class="blur-overlay">
+            <div class="blur-text">Full Gallery</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Login Prompt Modal -->
+  <div class="modal-overlay" id="loginPromptModal">
+    <div class="modal-content">
+      <span class="close-modal" id="closeModal">&times;</span>
+      <h2>Save Your Favorite Outfits</h2>
+      <p>Create a free account to save outfits and build your personal style collection.</p>
+      <div class="modal-actions">
+        <button class="modal-btn primary" onclick="window.location.href='signup.html'">Sign Up Free</button>
+        <button class="modal-btn secondary" onclick="window.location.href='login.html'">Log In</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Image Modal -->
+  <div class="image-overlay" id="imageOverlay">
+    <span class="close-overlay" id="closeOverlay">&times;</span>
+    <span class="nav-arrow prev-arrow" id="prevArrow">&#8249;</span>
+    <span class="nav-arrow next-arrow" id="nextArrow">&#8250;</span>
+    <img id="overlayImage" src="" alt="Enlarged image">
+    <div class="image-counter" id="imageCounter">1 / 12</div>
+    <button class="save-count-display" id="saveCountDisplay">
+      <span class="save-count-icon" id="saveCountIcon">♥</span>
+      <span class="save-count-text" id="saveCountText">0 saves</span>
+    </button>
+    <div class="profile-info-overlay" id="profileInfoOverlay" style="display: none;">
+      <div class="profile-avatar">👤</div>
+      <div class="profile-details">
+        <h4 class="profile-username" id="profileUsername">Username</h4>
+        <p class="profile-member-since" id="profileMemberSince">Member since</p>
+        <div class="profile-actions">
+          <button class="view-full-profile-btn" id="viewFullProfileBtn">View Full Profile</button>
+          <button class="delete-outfit-btn" id="deleteOutfitBtn" style="display: none;">Delete Outfit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 Fitspo. All rights reserved.</p>
+  </footer>
+
+  <script src="gallery.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

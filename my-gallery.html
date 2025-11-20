@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fitspo | My Gallery</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .my-gallery-container {
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    .back-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #a0522d;
+      color: white;
+      text-decoration: none;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-weight: 600;
+      margin-bottom: 30px;
+      transition: background 0.3s ease;
+    }
+
+    .back-button:hover {
+      background: #8a4125;
+    }
+
+    .gallery-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .gallery-header h1 {
+      color: #a0522d;
+      margin-bottom: 10px;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 25px;
+      margin-top: 30px;
+    }
+
+    .gallery-item {
+      position: relative;
+      aspect-ratio: 3/4;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+      cursor: pointer;
+    }
+
+    .gallery-item:hover {
+      transform: translateY(-8px);
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .gallery-item-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(to bottom, transparent 50%, rgba(0,0,0,0.8));
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 20px;
+    }
+
+    .gallery-item:hover .gallery-item-overlay {
+      opacity: 1;
+    }
+
+    .gallery-item-title {
+      color: white;
+      font-weight: 600;
+      margin: 0 0 5px 0;
+      font-size: 16px;
+    }
+
+    .gallery-item-stats {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: white;
+      font-size: 14px;
+    }
+
+    .gallery-item-likes {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .gallery-item-date {
+      opacity: 0.8;
+    }
+
+    .no-uploads {
+      text-align: center;
+      padding: 60px 20px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+    }
+
+    .no-uploads h3 {
+      color: #a0522d;
+      margin-bottom: 15px;
+    }
+
+    .no-uploads p {
+      color: #666;
+      margin-bottom: 25px;
+    }
+
+    .upload-btn {
+      background: #a0522d;
+      color: white;
+      text-decoration: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-weight: 600;
+      transition: background 0.3s ease;
+    }
+
+    .upload-btn:hover {
+      background: #8a4125;
+    }
+  </style>
+</head>
+<body>
+  <script>
+    // Check if user is logged in, redirect if not
+    const isLoggedIn = localStorage.getItem("isLoggedIn");
+    if (isLoggedIn !== "true") {
+      alert("Please log in to access your gallery.");
+      window.location.href = "login.html";
+    }
+  </script>
+  
+  <header>
+    <div class="logo"><a href="index.html">Fashionly</a></div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
+        <li><a href="quiz.html">Quiz</a></li>
+        <li><a href="profile.html">Profile</a></li>
+        <li><a href="#" id="logoutBtn">Log Out</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="my-gallery-container">
+    <a href="profile.html" class="back-button">
+      ← Back to Profile
+    </a>
+
+    <div class="gallery-header">
+      <h1>My Gallery</h1>
+      <p>All your uploaded photos and style inspirations</p>
+    </div>
+
+    <div class="gallery-grid" id="galleryGrid">
+      <!-- Content will be populated by JavaScript -->
+    </div>
+
+    <div class="no-uploads" id="noUploads" style="display: none;">
+      <h3>No Photos Yet</h3>
+      <p>Start sharing your style! Upload your first photo to the gallery and it will appear here.</p>
+      <a href="gallery.html" class="upload-btn">Upload to Gallery</a>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Fashionly. All rights reserved.</p>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      loadMyGallery();
+    });
+    
+    function loadMyGallery() {
+      const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+      // Get data from gallery manager if available, otherwise from localStorage
+      let galleryData = [];
+      if (window.galleryManager) {
+        galleryData = window.galleryManager.getAllGalleryData();
+      } else {
+        // Fallback: try saved full gallery data first, then combine preset data with user uploads
+        galleryData = JSON.parse(localStorage.getItem('fullGalleryData') || '[]');
+        if (galleryData.length === 0) {
+          const userUploads = JSON.parse(localStorage.getItem('userGalleryUploads') || '[]');
+          galleryData = [
+            { id: 1, src: 'outfit3.jpg', title: 'Edgy Street-wear', category: 'casual', description: 'Urban fashion forward', uploadDate: '2025-11-09T18:00:00.000Z' },
+            { id: 2, src: 'gallery1.jpeg', title: 'Classic Professional', category: 'professional', description: 'Timeless office elegance', uploadDate: '2025-11-09T19:00:00.000Z' },
+            { id: 3, src: 'outfit2.jpg', title: 'Bold Print Statement', category: 'casual', description: 'Eye-catching prints for confident style', uploadDate: '2025-11-09T20:00:00.000Z' },
+            { id: 4, src: 'outfit1.jpg', title: 'Mini Dress Madness', category: 'trendy', description: 'Soft and elegant styling', uploadDate: '2025-11-09T21:00:00.000Z' },
+            ...userUploads
+          ];
+        }
+      }
+      
+      const galleryGrid = document.getElementById('galleryGrid');
+      const noUploads = document.getElementById('noUploads');
+      
+      // Filter user's uploads
+      const userUploads = galleryData.filter(item => item.uploadedByUserId === currentUser.userId);
+      
+      if (userUploads.length === 0) {
+        galleryGrid.style.display = 'none';
+        noUploads.style.display = 'block';
+        return;
+      }
+      
+      galleryGrid.style.display = 'grid';
+      noUploads.style.display = 'none';
+      
+      // Sort by upload date (newest first)
+      userUploads.sort((a, b) => new Date(b.uploadDate) - new Date(a.uploadDate));
+      
+      galleryGrid.innerHTML = userUploads.map(item => `
+        <div class="gallery-item" data-id="${item.id}">
+          <img src="${item.image || item.src}" alt="${item.title}" loading="lazy">
+          <div class="gallery-item-overlay">
+            <h4 class="gallery-item-title">${item.title}</h4>
+            <div class="gallery-item-stats">
+              <div class="gallery-item-likes">
+                ❤️ ${item.likes ? item.likes.length : 0}
+              </div>
+              <div class="gallery-item-date">
+                ${new Date(item.uploadDate).toLocaleDateString()}
+              </div>
+            </div>
+          </div>
+        </div>
+      `).join('');
+      
+      // Add click handlers to view items
+      galleryGrid.querySelectorAll('.gallery-item').forEach(item => {
+        item.addEventListener('click', () => {
+          const itemId = parseInt(item.dataset.id);
+          // Get fresh data for the click handler
+          let currentGalleryData = [];
+          if (window.galleryManager) {
+            currentGalleryData = window.galleryManager.getAllGalleryData();
+          } else {
+            currentGalleryData = JSON.parse(localStorage.getItem('fullGalleryData') || '[]');
+          }
+          const galleryItem = currentGalleryData.find(g => g.id === itemId);
+          if (galleryItem && window.galleryManager && window.galleryManager.openModal) {
+            window.galleryManager.openModal(galleryItem);
+          }
+        });
+      });
+    }
+  </script>
+</body>
+</html>
