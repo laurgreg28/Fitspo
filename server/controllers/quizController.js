@@ -1,5 +1,5 @@
-const StyleProfile = require('../../src/models/StyleProfile');
-const User = require('../../src/models/User');
+const StyleProfile = require('../src/models/StyleProfile');
+const User = require('../src/models/User');
 const scoringService = require('../services/scoringService');
 
 exports.submitQuiz = async (req, res) => {
