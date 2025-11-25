@@ -14,12 +14,12 @@ const quizRoutes = require('./routes/quiz');
 const app = express();
 app.use(cors());
 app.use(bodyParser.json({ limit: '1mb' }));
-
+app.use(express.static(path.join(__dirname)));
 app.use('/api/auth', authRoutes);
 app.use('/api/quiz', quizRoutes);
-
+app.
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html')); });
+    res.sendFile(path.join(__dirname, 'index.html')); });
 
 app.get('/api/health', (req, res) => res.json({ status: 'ok' }));
 
