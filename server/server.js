@@ -1,3 +1,4 @@
+
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
@@ -15,6 +16,7 @@ app.use(bodyParser.json({ limit: '1mb' }));
 
 app.use('/api/auth', authRoutes);
 app.use('/api/quiz', quizRoutes);
+//
 
 // Simple health endpoint
 app.get('/api/health', (req, res) => res.json({ status: 'ok' }));
