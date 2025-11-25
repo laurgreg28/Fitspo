@@ -579,12 +579,12 @@ class StyleQuiz {
 
     // Body-shape influences (moderate signal)
     const bodyBoosts = {
-      'hourglass': { 'classic': 2, 'romantic': 1 },
+      'hourglass': { 'classic': 1, 'romantic': 1 },
       'round': { 'bohemian': 1, 'casual': 1 },
       'rectangle': { 'edgy': 1, 'minimalist': 1 },
       'inverted-triangle': { 'casual': 1, 'classic': 1 },
       'apple': { 'bohemian': 1, 'casual': 1 },
-      'athletic': { 'edgy': 2, 'minimalist': 1 }
+      'athletic': { 'edgy': 1, 'minimalist': 1 }
     };
     if (body && bodyBoosts[body]) {
       Object.keys(bodyBoosts[body]).forEach(s => scores[s] += bodyBoosts[body][s]);
