@@ -20,14 +20,13 @@ const quizRoutes = require('./routes/quiz');
 app.use('/api/auth', authRoutes);
 app.use('/api/quiz', quizRoutes);
 
-
+const staticPath = path.join(__dirname, 'Fitspo');
 
 app.get('/api/health', (req, res) => res.json({ status: 'ok' }));
-
-app.use(express.static(path.join(__dirname)));
+app.use(express.static(staticPath));
 
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html')); });
+    res.sendFile(path.join(staticPath, 'index.html')); });
 
-    const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Fitspo server running on port ${PORT}`));
