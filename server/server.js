@@ -20,7 +20,7 @@ const quizRoutes = require('./routes/quiz');
 app.use('/api/auth', authRoutes);
 app.use('/api/quiz', quizRoutes);
 
-const staticPath = path.join(__dirname, 'Fitspo');
+const staticPath = path.join(__dirname, '..', 'Fitspo');
 
 app.get('/api/health', (req, res) => res.json({ status: 'ok' }));
 app.use(express.static(staticPath));
